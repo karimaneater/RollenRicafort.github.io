@@ -37,7 +37,10 @@
               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
               <!-- Calculator Button trigger modal -->
               <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch Calculator!
+                <strong>
+                  Launch Calculator?
+                </strong>
+                
               </button>
             </div>
           </div>
@@ -53,15 +56,21 @@
               <div class="modal-body">
                 
                 
-                <div class="container-fluid border border-dark pt-2 pb-2">
+                <div class="container-fluid border border-info pt-2 pb-2">
                   <div class="d-flex row justify-content-center gap-3">
 
-                    <div class="col-md-12 pb-3 pt-3">
-                      <div class=" border border-dark" >
-                        <input type="text" id="myInput2" class="form-control" maxlength="16" readonly  style=" word-wrap: break-word; white-space: nowrap;">
+                    <div class=" col-md-12 pb-3 pt-3">
+                      <div class=" " style="border-bottom: transparent !important;">
+                        <input type="text" id="myInput2" class="form-control" maxlength="16" readonly  style="text-align: right;">
                       </div>
-                      <div class=" border border-dark" >
-                        <input type="text" id="myInput1" class="form-control" maxlength="16" readonly  style=" word-wrap: break-word; white-space: nowrap;">
+                      <div class=" row" style="border-top: transparent !important;">
+                        <div class="col-md-3" style="padding-right: 0;">
+                          <input type="text" id="operandInput" class="form-control" readonly >
+                        </div>
+                        <div class="col-md-9" style="padding-left: 0;">
+                          <input type="text" id="myInput1" class="form-control" maxlength="16" readonly  style="text-align: right;">
+                        </div>
+                        
                       </div>
                       <!-- <input type="text" id="myInput" class="form-control" readonly  style="height:100px; word-wrap: break-word; white-space: nowrap;"> -->
                     </div>
@@ -117,7 +126,11 @@
                   </div>
                 </div>
                
-
+                <div>
+                  <small class="fw-light">
+                    note: deleting operand is still WIP!
+                  </small>
+                </div>
                 
   
               </div>
@@ -151,24 +164,32 @@
     // CLEAR BTN
     $('#calcClear').click(function(){
       let inpuut = $("#myInput1").val();
+      let inpuut1 = $("#myInput2").val();
+      let operatorInput = $("#operandInput").val();
       if (inpuut.length == 0){
-        let inpuut1 = $("#myInput2").val();
         let clear1 = inpuut1.substring(0, inpuut1.length - 1);
         $("#myInput2").val(clear1);
-      } else {
+      } 
+      else if (inpuut.length == 0 && inpuut1.length == 0){
+        let clear2 = operatorInput.substring(0, operatorInput.length - 1);
+        $("#operandInput").val(clear2);
+      } 
+      else {
         let clear = inpuut.substring(0, inpuut.length - 1);
         $("#myInput1").val(clear);
       }
     });
 
     // CALC
-
+      var operator;
     $('.operator').click(function(){
       operator = this.value;
+      $('#operandInput').val(operator);
       var temp1 = $("#myInput2").val();
       var inpuut = $("#myInput1").val();
       if (temp1.length > 0){
-          var sameOperandEval = eval(temp1+operator+inpuut);
+          var tempOperator = $('#operandInput').val();
+          var sameOperandEval = eval(temp1+tempOperator+inpuut);
           $("#myInput2").val(sameOperandEval);
           $("#myInput1").val("");
       } else {
@@ -183,6 +204,8 @@
           var output = eval(temp+operator+newInput);
           $("#myInput1").val(output);
           $("#myInput2").val("");
+          $("#operandInput").val("");
+          operator = "";
     });
   });
  
