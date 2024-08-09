@@ -56,16 +56,12 @@
                 <div class="container-fluid border border-dark pt-2 pb-2">
                   <div class="d-flex row justify-content-center gap-3">
 
-                    <div class="col-md-12 border border-dark">
+                    <div class="col-md-12 pb-3 pt-3">
                       <div class=" border border-dark" >
-                        <div class="col-md-12">
-
-                        </div>
+                        <input type="text" id="myInput2" class="form-control" maxlength="16" readonly  style=" word-wrap: break-word; white-space: nowrap;">
                       </div>
-                      <div class=" border border-dark">
-                        <div class="col-md-12">
-                          
-                        </div>
+                      <div class=" border border-dark" >
+                        <input type="text" id="myInput1" class="form-control" maxlength="16" readonly  style=" word-wrap: break-word; white-space: nowrap;">
                       </div>
                       <!-- <input type="text" id="myInput" class="form-control" readonly  style="height:100px; word-wrap: break-word; white-space: nowrap;"> -->
                     </div>
@@ -79,7 +75,7 @@
                  
                       <button class="btn btn-primary btn-lg calcBtn" value="3" style="border-radius: 10%;">3</button>
   
-                      <button class="btn btn-primary btn-lg calcBtn" value="/" style="border-radius: 10%;">/</button>
+                      <button class="btn btn-primary btn-lg operator" value="/" style="border-radius: 10%;">/</button>
                      </div>
   
                      <div class="d-flex flex-row justify-content-between">
@@ -91,7 +87,7 @@
                  
                       <button class="btn btn-primary btn-lg calcBtn" value="6" style="border-radius: 10%;">6</button>
   
-                      <button class="btn btn-primary btn-lg calcBtn" value="*" style="border-radius: 10%;">*</button>
+                      <button class="btn btn-primary btn-lg operator" value="*" style="border-radius: 10%;">*</button>
                      </div>
   
                      <div class="d-flex flex-row justify-content-between">
@@ -103,7 +99,7 @@
                  
                       <button class="btn btn-primary btn-lg calcBtn" value="9" style="border-radius: 10%;">9</button>
   
-                      <button class="btn btn-primary btn-lg calcBtn" value="-" style="border-radius: 10%;">-</button>
+                      <button class="btn btn-primary btn-lg operator" value="-" style="border-radius: 10%;">-</button>
                      </div>
   
                      <div class="d-flex flex-row justify-content-between">
@@ -113,9 +109,9 @@
                       <button class="btn btn-primary btn-lg calcBtn" value="0" style="border-radius: 10%;">0</button>
                     
                  
-                      <button class="btn btn-primary btn-lg calcBtn" value="=" style="border-radius: 10%;">=</button>
+                      <button class="btn btn-primary btn-lg" id="equalsBtn" value="=" style="border-radius: 10%;">=</button>
   
-                      <button class="btn btn-primary btn-lg" id="sumBtn" value="1" style="border-radius: 10%;">+</button>
+                      <button class="btn btn-primary btn-lg operator" id="sumBtn" value="+" style="border-radius: 10%;">+</button>
                      </div>
   
                   </div>
@@ -149,19 +145,44 @@
     // GET BTN VAL
     $('.calcBtn').click(function(){
         var res = this.value;
-        $('#myInput').val($('#myInput').val() + res)
+        $('#myInput1').val($('#myInput1').val() + res)
     });
 
     // CLEAR BTN
     $('#calcClear').click(function(){
-      var inpuut = $("input#myInput").val();
-      let clear = inpuut.substring(0, inpuut.length - 1);
-      $("input#myInput").val(clear);
+      let inpuut = $("#myInput1").val();
+      if (inpuut.length == 0){
+        let inpuut1 = $("#myInput2").val();
+        let clear1 = inpuut1.substring(0, inpuut1.length - 1);
+        $("#myInput2").val(clear1);
+      } else {
+        let clear = inpuut.substring(0, inpuut.length - 1);
+        $("#myInput1").val(clear);
+      }
     });
 
-    // SUM
-    $('#sumBtn').click(function(){
-      
+    // CALC
+
+    $('.operator').click(function(){
+      operator = this.value;
+      var temp1 = $("#myInput2").val();
+      var inpuut = $("#myInput1").val();
+      if (temp1.length > 0){
+          var sameOperandEval = eval(temp1+operator+inpuut);
+          $("#myInput2").val(sameOperandEval);
+          $("#myInput1").val("");
+      } else {
+          $("#myInput2").val(inpuut);
+          $("#myInput1").val("");
+      }
+    });
+
+    $('#equalsBtn').click(function(){
+          var newInput = $("#myInput1").val();
+          var temp = $("#myInput2").val();
+          var output = eval(temp+operator+newInput);
+          $("#myInput1").val(output);
+          $("#myInput2").val("");
     });
   });
  
